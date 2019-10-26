@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct _CC_VECTOR { 
-    // Members
+typedef struct _CC_VECTOR {
     int *Data;
     int Size;
     int Capacity;
@@ -11,8 +10,7 @@ typedef struct _CC_VECTOR {
 } CC_VECTOR; 
   
 int VecCreate(CC_VECTOR **Vector); 
-int VecDestroy(CC_VECTOR **Vector); 
-  
+int VecDestroy(CC_VECTOR **Vector);
 int VecInsertTail(CC_VECTOR *Vector, int Value); 
 int VecInsertHead(CC_VECTOR *Vector, int Value); 
 int VecInsertAfterIndex(CC_VECTOR *Vector, int Index, int Value); 

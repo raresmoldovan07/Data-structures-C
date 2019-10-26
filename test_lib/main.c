@@ -22,10 +22,6 @@ int main(void)
 
 void RunTests()
 {
-    /// NOTE: The tests provided here are by no means exhaustive and are only
-    /// provided as a starting point (not all functions are tested, not all use cases
-    /// and failure scenarios are covered). You are encouraged to expand these tests
-    /// to include missing scenarios.
     if (0 == TestVector())
     {
         printf("Vector test passed\n\n");

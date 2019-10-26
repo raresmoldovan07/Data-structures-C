@@ -9,7 +9,6 @@ int StCreate(CC_STACK **Stack)
     *Stack = (CC_STACK *)malloc(sizeof(CC_STACK));
     if (*Stack == NULL)
     {
-        //malloc failed.
         return -1;
     }
     (*Stack)->Capacity = 1;
@@ -64,7 +63,6 @@ int StPop(CC_STACK *Stack, int *Value)
     }
     if (Stack->Top == -1)
     {
-        //stiva este goala
         return -1;
     }
     *Value = Stack->Data[Stack->Top--];
@@ -79,7 +77,6 @@ int StPeek(CC_STACK *Stack, int *Value)
     }
     if (Stack->Top == -1)
     {
-        //stiva este goala
         return -1;
     }
     *Value = Stack->Data[Stack->Top];
@@ -138,11 +135,9 @@ int StPushStack(CC_STACK *Stack, CC_STACK *StackToPush)
         newData[Stack->Top + i + 1] = StackToPush->Data[i];
     }
 
-    //setam noul varf si noua capacitate inainte de a elibera stiva copiata
     Stack->Capacity = Stack->Top + StackToPush->Top + 2;
     Stack->Top = Stack->Top + StackToPush->Top + 1;
 
-    //eliberam stiva copiataa
     StClear(StackToPush);
     free(Stack->Data);
 

@@ -12,9 +12,11 @@ typedef struct _CC_HEAP{
 // HpCreateMaxHeap and HpCreateMinHeap should create a max heap or a min heap, 
 // respectively. InitialElements is an optional parameter and, if it is not null, the constructed
 // heap should initially contain all the elements in the provided vector.
-int HpCreateMaxHeap(CC_HEAP **MaxHeap, CC_VECTOR* InitialElements); 
-int HpCreateMinHeap(CC_HEAP **MinHeap, CC_VECTOR* InitialElements); 
-int HpDestroy(CC_HEAP **Heap); 
+int HpCreateMaxHeap(CC_HEAP **MaxHeap, CC_VECTOR* InitialElements);
+
+int HpCreateMinHeap(CC_HEAP **MinHeap, CC_VECTOR* InitialElements);
+
+int HpDestroy(CC_HEAP **Heap);
 
 int HpInsert(CC_HEAP *Heap, int Value); 
 

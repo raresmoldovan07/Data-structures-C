@@ -3,7 +3,6 @@
 
 static unsigned long Hash(char *Str)
 {
-    //functia hash
     unsigned long hash = 5381;
     int c;
     while (c = *Str++)
@@ -15,9 +14,6 @@ static unsigned long Hash(char *Str)
 
 static int CompareStrings(const char *S1, const char *S2)
 {
-    /* compara s1 si s2, si returneaza o valoarea mai mica,
-    egala sau mai mare cu zero daca s1 este mai mic,
-    egal sau mai mare lexicografic decat s2.*/
     const unsigned char *s1 = (const unsigned char *)S1;
     const unsigned char *s2 = (const unsigned char *)S2;
     unsigned char c1, c2;
@@ -33,7 +29,6 @@ static int CompareStrings(const char *S1, const char *S2)
 
 static char *CopyString(char *Destination, const char* Source)
 {
-    //copiaza stringul sursa in cel destinatie
     char *Save = Destination;
     while (*Destination++ = *Source++);
     return Save;
@@ -41,7 +36,6 @@ static char *CopyString(char *Destination, const char* Source)
 
 static void DeleteTableList(NODE *node)
 {
-    //sterge recursiv lista inlantuita
     if (node == NULL)
     {
         return;
@@ -59,13 +53,11 @@ static void DeleteTableList(NODE *node)
 
 static NODE *NewPair(char *Key, int Value)
 {
-    //creeaza o noua pereche de tipul (cheie, valoare)
     NODE *newPair;
 
     newPair = (NODE*)malloc(sizeof(NODE));
     if (newPair == NULL)
     {
-        //malloc failed
         return NULL;
     }
     newPair->Value = Value;
@@ -91,7 +83,6 @@ int HtCreate(CC_HASH_TABLE** HashTable)
     *HashTable = (CC_HASH_TABLE*)malloc(sizeof(CC_HASH_TABLE));
     if (*HashTable == NULL)
     {
-        //malloc failed
         return -1;
     }
     (*HashTable)->Table = (NODE**)malloc(sizeof(NODE*) * HASH_SIZE);
@@ -142,24 +133,18 @@ int HtSetKeyValue(CC_HASH_TABLE* HashTable, char* Key, int Value)
 
     actualNode = HashTable->Table[hashIndex];
 
-    while (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) > 0)
+    while (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) > 0)
     {
-        //incercam sa gasim cheia in hashtable
-        //cheile sunt sortate lexicografic
         lastNode = actualNode;
         actualNode = actualNode->Next;
     }
 
-    if (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) == 0)
+    if (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) == 0)
     {
-        //am gasit cheia in hashtable
         actualNode->Value = Value;
     }
     else
     {
-        //trebuie sa introducem o noua pereche cheie-valoare
         newNode = NewPair(Key, Value);
         if (newNode == NULL)
         {
@@ -168,7 +153,6 @@ int HtSetKeyValue(CC_HASH_TABLE* HashTable, char* Key, int Value)
         HashTable->KeyCount++;
         if (actualNode == HashTable->Table[hashIndex])
         {
-            //start of linked list
             newNode->Next = actualNode;
             HashTable->Table[hashIndex] = newNode;
         }
@@ -195,17 +179,13 @@ int HtGetKeyValue(CC_HASH_TABLE* HashTable, char* Key, int *Value)
 
     actualNode = HashTable->Table[hashIndex];
 
-    while (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) > 0)
+    while (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) > 0)
     {
-        //incercam sa gasim cheia in hashtable
         lastNode = actualNode;
         actualNode = actualNode->Next;
     }
-    if (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) == 0)
+    if (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) == 0)
     {
-        //am gasit cheia in hashtable
         *Value = actualNode->Value;
         return 0;
     }
@@ -226,20 +206,15 @@ int HtRemoveKey(CC_HASH_TABLE* HashTable, char* Key)
 
     actualNode = HashTable->Table[hashIndex];
 
-    while (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) > 0)
+    while (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) > 0)
     {
-        //incercam sa gasim cheia in hashtable
         lastNode = actualNode;
         actualNode = actualNode->Next;
     }
-    if (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) == 0)
+    if (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) == 0)
     {
-        //am gasit cheia in actualNode
         if (lastNode == NULL)
         {
-            //cheia este la inceput
             HashTable->Table[hashIndex] = actualNode->Next;
             free(actualNode);
         }
@@ -268,17 +243,13 @@ int HtHasKey(CC_HASH_TABLE* HashTable, char* Key)
 
     actualNode = HashTable->Table[hashIndex];
 
-    while (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) > 0)
+    while (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) > 0)
     {
-        //incercam sa gasim cheia in hashtable
         lastNode = actualNode;
         actualNode = actualNode->Next;
     }
-    if (actualNode != NULL && actualNode->Key != NULL &&
-        CompareStrings(Key, actualNode->Key) == 0)
+    if (actualNode != NULL && actualNode->Key != NULL && CompareStrings(Key, actualNode->Key) == 0)
     {
-        //am gasit cheia in hashtable
         return 1;
     }
     return 0;
@@ -292,7 +263,6 @@ int HtGetNthKey(CC_HASH_TABLE* HashTable, int Index, char** Key)
     }
     if (Index >= HashTable->KeyCount || Index < 0)
     {
-        //index nu apartine [0, numarul_de_chei - 1]
         return -1;
     }
     int myIndex = -1, i;
@@ -304,7 +274,6 @@ int HtGetNthKey(CC_HASH_TABLE* HashTable, int Index, char** Key)
             myIndex++;
             if (myIndex == Index)
             {
-                //am gasit cheia
                 *Key = node->Key;
                 return 0;
             }
@@ -324,7 +293,6 @@ int HtClear(CC_HASH_TABLE* HashTable)
     for (i = 0; i < HashTable->Size; ++i)
     {
         NODE *node = HashTable->Table[i];
-        //stergem recursiv fiecare lista din hashtable
         if (node != NULL)
         {
             DeleteTableList(node);

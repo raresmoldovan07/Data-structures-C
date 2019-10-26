@@ -10,27 +10,22 @@ inline void Swap(int *A, int *B)
 
 static void UpInHeap(CC_HEAP *Heap, int Position)
 {
-    //Pune nodul de pe pozitia Position pe pozitia corespunzatoare
     if (Heap == NULL)
     {
         return;
     }
     if (Heap->Type == 0)
     {
-        //MIN-HEAP
         while (Position > 0 && Heap->Data[Position] < Heap->Data[(Position - 1) >> 1])
         {
-            //Parintele nodului are indicele ( Position - 1 ) / 2
             Swap(&Heap->Data[Position], &Heap->Data[(Position - 1) >> 1]);
             Position = (Position - 1) >> 1;
         }
     }
     else
     {
-        //MAX-HEAP
         while (Position > 0 && Heap->Data[Position] > Heap->Data[(Position - 1) >> 1])
         {
-            //Parintele nodului are indicele ( Position - 1 ) / 2
             Swap(&Heap->Data[Position], &Heap->Data[(Position - 1) >> 1]);
             Position = (Position - 1) >> 1;
         }
@@ -46,22 +41,18 @@ static void DownInHeap(CC_HEAP *Heap, int Position)
     int son = 0;
     if (Heap->Type == 0)
     {
-        //MIN-HEAP
         while (son != -1)
         {
             son = -1;
             if ((Position << 1) + 1 < Heap->Size)
             {
-                //Alegem initial fiul stang fara sa stim daca este mai mic decat nodul parinte
                 son = (Position << 1) + 1;
                 if (Heap->Data[(Position << 1) + 2] < Heap->Data[son] && (Position << 1) + 2 < Heap->Size)
                 {
-                    //Fiul drept este mai mic decat cel stang
                     son = (Position << 1) + 2;
                 }
                 if (Heap->Data[son] > Heap->Data[Position])
                 {
-                    //Nodul parinte este mai mic deja ca ambii fii
                     son = -1;
                 }
             }
@@ -74,22 +65,18 @@ static void DownInHeap(CC_HEAP *Heap, int Position)
     }
     else
     {
-        //MAX-HEAP
         while (son != -1)
         {
             son = -1;
             if ((Position << 1) + 1 < Heap->Size)
             {
-                //Alegem initial fiul stang fara sa stim daca este mai mic decat nodul parinte
                 son = (Position << 1) + 1;
                 if (Heap->Data[(Position << 1) + 2] > Heap->Data[son] && (Position << 1) + 2 < Heap->Size)
                 {
-                    //Fiul drept este mai mare decat cel stang
                     son = (Position << 1) + 2;
                 }
                 if (Heap->Data[son] < Heap->Data[Position])
                 {
-                    //Nodul parinte este mai mare deja ca ambii fii
                     son = -1;
                 }
             }
@@ -111,7 +98,6 @@ int HpCreateMaxHeap(CC_HEAP **MaxHeap, CC_VECTOR* InitialElements)
     *MaxHeap = (CC_HEAP*)malloc(sizeof(CC_HEAP));
     if (*MaxHeap == NULL)
     {
-        //malloc failed
         return -1;
     }
     (*MaxHeap)->Type = 1;
@@ -137,7 +123,6 @@ int HpCreateMinHeap(CC_HEAP **MinHeap, CC_VECTOR* InitialElements)
     *MinHeap = (CC_HEAP*)malloc(sizeof(CC_HEAP));
     if (*MinHeap == NULL)
     {
-        //malloc failed
         return -1;
     }
     (*MinHeap)->Type = 0;
@@ -195,7 +180,7 @@ int HpRemove(CC_HEAP *Heap, int Value)
     {
         return -1;
     }
-    int valuesLeft = 1; //presupunem ca au mai ramas elemente de sters
+    int valuesLeft = 1;
     while (valuesLeft)
     {
         valuesLeft = 0;
@@ -205,11 +190,10 @@ int HpRemove(CC_HEAP *Heap, int Value)
             if (Heap->Data[i] == Value)
             {
                 valuesLeft = 1;
-                Swap(&Heap->Data[i], &Heap->Data[--Heap->Size]);//interschimbam cu ultimul nod
-                //apoi il coboram sau urcam in heap
+                Swap(&Heap->Data[i], &Heap->Data[--Heap->Size]);
                 UpInHeap(Heap, i);
                 DownInHeap(Heap, i);
-                break;//nu stergem mai multe elemente cat timp iteram - comportament nedefinit
+                break;
             }
         }
     }
@@ -233,8 +217,8 @@ int HpPopExtreme(CC_HEAP *Heap, int* ExtremeValue)
         return -1;
     }
     *ExtremeValue = Heap->Data[0];
-    Swap(&Heap->Data[0], &Heap->Data[--Heap->Size]);//schimbam nodul din radacina cu ultima frunza
-    DownInHeap(Heap, 0); //apoi coboram radacina pana in pozitia corespunzatoare
+    Swap(&Heap->Data[0], &Heap->Data[--Heap->Size]);
+    DownInHeap(Heap, 0);
     return 0;
 }
 
@@ -273,7 +257,6 @@ int HpSortToVector(CC_HEAP *Heap, CC_VECTOR* SortedVector)
     }
     else
     {
-        //MAX-HEAP
         while (HpGetElementCount(Heap) != 0)
         {
             int popValue, retVal;
@@ -291,5 +274,4 @@ int HpSortToVector(CC_HEAP *Heap, CC_VECTOR* SortedVector)
         HpInsert(Heap, SortedVector->Data[i]);
     }
     return 0;
-
 }

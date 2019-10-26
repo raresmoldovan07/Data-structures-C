@@ -68,13 +68,10 @@ static TREE_NODE* BalanceTree(TREE_NODE *Node)
     }
     else if (Node->Right == NULL)
     {
-        //nu avem fiu in dreapta
         leftHeight = Node->Left->Height;
     }
     else if (Node->Left == NULL)
     {
-        //nu avem fiu in stanga
-
         rightHeight = Node->Right->Height;
     }
     else
@@ -84,7 +81,6 @@ static TREE_NODE* BalanceTree(TREE_NODE *Node)
     }
     if (leftHeight > rightHeight + 1)
     {
-        //subarborele stang este mai lung
         if (Node->Left->Right && Node->Left->Left)
             if (Node->Left->Right->Height > Node->Left->Left->Height)
             {
@@ -101,13 +97,11 @@ static TREE_NODE* BalanceTree(TREE_NODE *Node)
             }
         Node = RotateRight(Node);
     }
-
     return Node;
 }
 
 static TREE_NODE* FindMin(TREE_NODE *Node)
 {
-    //minimul se afla in nodul cel mai din stanga
     while (Node->Left != NULL)
     {
         Node = Node->Left;
@@ -117,13 +111,11 @@ static TREE_NODE* FindMin(TREE_NODE *Node)
 
 static TREE_NODE* InsertNode(TREE_NODE* Node, int Value)
 {
-    // If the tree is empty, return a new, single node  
     if (Node == NULL)
     {
         TREE_NODE *newNode = (TREE_NODE*)malloc(sizeof(TREE_NODE));
         if (newNode == NULL)
         {
-            //malloc failed
             return NULL;
         }
         newNode->Left = NULL;
@@ -143,7 +135,6 @@ static TREE_NODE* InsertNode(TREE_NODE* Node, int Value)
             Node->Right = InsertNode(Node->Right, Value);
         }
         return BalanceTree(Node);
-
     }
 }
 
@@ -231,7 +222,6 @@ static void PreOrder(TREE_NODE *Node, int Index, int *Value, int *IndexInOrder)
     PreOrder(Node->Left, Index, Value, IndexInOrder);
     PreOrder(Node->Right, Index, Value, IndexInOrder);
     return;
-
 }
 
 static void InOrder(TREE_NODE *Node, int Index, int *Value, int *IndexInOrder)
@@ -249,7 +239,6 @@ static void InOrder(TREE_NODE *Node, int Index, int *Value, int *IndexInOrder)
     }
     InOrder(Node->Right, Index, Value, IndexInOrder);
     return;
-
 }
 
 static void PostOrder(TREE_NODE *Node, int Index, int *Value, int *IndexInOrder)

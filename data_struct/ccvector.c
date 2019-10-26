@@ -8,13 +8,11 @@ int VecCreate(CC_VECTOR **Vector)
 {
     if (Vector == NULL)
     {
-        // pentru cazul VecCreate(NULL)
         return -1;
     }
     *Vector = (CC_VECTOR*)malloc(sizeof(CC_VECTOR));
     if (*Vector == NULL)
     {
-        //malloc failed - aici chiar nu-i vina mea
         return -1;
     }
     (*Vector)->Capacity = 1;
@@ -43,7 +41,6 @@ int VecInsertTail(CC_VECTOR *Vector, int Value)
 {
     if (Vector == NULL)
     {
-        //Vectorul nu a fost creat
         return -1;
     }
     if (Vector->Size >= Vector->Capacity)
@@ -63,7 +60,6 @@ int VecInsertHead(CC_VECTOR *Vector, int Value)
 {
     if (Vector == NULL)
     {
-        //Vectorul nu a fost creat
         return -1;
     }
     if (Vector->Size >= Vector->Capacity)
@@ -95,12 +91,10 @@ int VecInsertAfterIndex(CC_VECTOR *Vector, int Index, int Value)
 {
     if (Vector == NULL)
     {
-        //Vectorul nu a fost creat
         return -1;
     }
     if (Index < 0 || Index >= Vector->Size)
     {
-        //index nu apartine intervalului [0, Size)
         return -1;
     }
     if (Vector->Size >= Vector->Capacity)
@@ -108,7 +102,6 @@ int VecInsertAfterIndex(CC_VECTOR *Vector, int Index, int Value)
         int resizeResult = VecResize(Vector);
         if (resizeResult == -1)
         {
-            //resize failed
             return -1;
         }
     }
@@ -126,13 +119,10 @@ int VecRemoveByIndex(CC_VECTOR *Vector, int Index)
 {
     if (Vector == NULL)
     {
-        //Vectorul nu a fost creat
         return -1;
     }
     if (Index < 0 || Index >= Vector->Size)
     {
-        //index nu apartine intervalului [0, Size)
-        //valabil si in cazul in care nu exista element in vector
         return -1;
     }
     int i;
@@ -150,13 +140,10 @@ int VecGetValueByIndex(CC_VECTOR *Vector, int Index, int *Value)
 {
     if (Vector == NULL || Value == NULL)
     {
-        //Vectorul nu a fost creat
         return -1;
     }
     if (Index < 0 || Index >= Vector->Size)
     {
-        //index nu apartine intervalului [0, Size)
-        //valabil si in cazul in care nu exista element in vector
         return -1;
     }
     *Value = Vector->Data[Index];
@@ -176,7 +163,6 @@ int VecClear(CC_VECTOR *Vector)
 {
     if (Vector == NULL)
     {
-        //Vectorul nu a fost creat
         return -1;
     }
     if (Vector->Data != NULL)
@@ -203,26 +189,20 @@ int VecSort(CC_VECTOR *Vector)
     if (auxVector == NULL)
     {
         return -1;
-        //malloc failed
     }
     mergeSort(auxVector, Vector->Data, 0, Vector->Size - 1);
     return 0;
 }
 
-// FUNCTIILE AUXILIARE
-
 static int VecResize(CC_VECTOR *Vector)
 {
-    //Dubleaza capacitatea vectorului daca toate pozitiile au fost ocupate.
     if (Vector == NULL)
     {
-        //normal nu ar trebui sa se intample asta.
         return -1;
     }
     int *newVector = (int *)malloc(sizeof(int) * (1 + 2 * Vector->Capacity));
     if (newVector == NULL)
     {
-        //malloc failed 
         return -1;
     }
     int i;
@@ -240,16 +220,13 @@ static int VecResize(CC_VECTOR *Vector)
 
 static int VecResizeToHalf(CC_VECTOR *Vector)
 {
-    //Reduce capacitatea vectorului pentru a economisi memoria.
     if (Vector == NULL)
     {
-        //normal nu ar trebui sa se intample asta.
         return -1;
     }
     int *newVector = (int *)malloc(sizeof(int) * (1 + Vector->Capacity / 2));
     if (newVector == NULL)
     {
-        //malloc failed 
         return -1;
     }
     int i;
@@ -267,13 +244,10 @@ static int VecResizeToHalf(CC_VECTOR *Vector)
 
 void mergeSort(int *AuxVector, int *Vector, int Left, int Right)
 {
-    //MergeSort in O(n log n) timp cu O(n) memorie auxiliara
-
     int middle = (Left + Right) >> 1, i, j, k;
     if (Left == Right)
         return;
 
-    //Impartim intervalul prin divide et impera
     mergeSort(AuxVector, Vector, Left, middle);
     mergeSort(AuxVector, Vector, middle + 1, Right);
 
@@ -291,5 +265,4 @@ void mergeSort(int *AuxVector, int *Vector, int Left, int Right)
 
     for (k = Left; k <= Right; ++k)
         Vector[k] = AuxVector[k];
-
 }
